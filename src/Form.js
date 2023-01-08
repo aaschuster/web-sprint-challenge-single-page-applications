@@ -2,16 +2,16 @@ import React from 'react'
 import "./form.css"
 import axios from 'axios';
 
-export default function Form( { values, onChange, onSubmit, disabled, errs, showErrs } ) {
+export default function Form( { values, onChange, onSubmit, disabled, errs } ) {
 
     return (
         <form id="pizza-form" onSubmit={onSubmit}>
             <h2>Build yourself a pizza pie my friend!</h2>
-            {showErrs && <div id="errs">
+            <div id="errs">
                 <div>{errs.name}</div>
                 <div>{errs.size}</div>
                 <div>{errs.post}</div>
-            </div>}
+            </div>
             <div id="options">
                 <div id="div1">
                     <label>

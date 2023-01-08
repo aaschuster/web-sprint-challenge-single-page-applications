@@ -42,15 +42,12 @@ const App = () => {
   const history = useHistory();
   const routeToPizza = () => history.push("/pizza");
   const routeToConfirm = () => history.push("/confirmation");
-  const [ changedValues, setChangedValues ] = useState([]);
   const [ values, setValues ] = useState(initValues);
   const [ errs, setErrs ] = useState(initErrs);
   const [ disabled, setDisabled ] = useState(true);
-  const [ showErrs, setShowErrs ] = useState(false);
 
   function onChange(evt) {
     const {name, value, type, checked} = evt.target;
-    if (!changedValues.includes(name)) setChangedValues([...changedValues, name]);
 
     if(name==="name" || name==="size") {
       yup.reach(schema, name)
@@ -70,17 +67,12 @@ const App = () => {
         .then(() => routeToConfirm())
         .catch(err => {
             console.error(err);
-            setShowErrs(true);
             setErrs({...errs, post: "Failed to order!"});
         })        
 }
 
   useEffect(() => schema.isValid(values).then((valid) => {
     setDisabled(!valid);
-
-    // dont show errors until both name & size have been changed to prevent awkward show/hiding of errors elements
-    if (changedValues.includes("name") && changedValues.includes("size") && valid===false) setShowErrs(true);
-    else setShowErrs(false);
   }), [values]);
 
   return (
@@ -95,7 +87,6 @@ const App = () => {
             onSubmit={onSubmit}
             disabled={disabled}
             errs={errs}
-            showErrs={showErrs}
           />
         </Route>
         <Route path="/confirmation">
