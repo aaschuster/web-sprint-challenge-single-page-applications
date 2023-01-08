@@ -1,12 +1,7 @@
 import React from 'react'
 import "./form.css"
 
-export default function Form( { values, setValues, routeToConfirm } ) {
-
-function onChange(evt) {
-    const {name, value, type, checked} = evt.target;
-    setValues({...values, [name]: type==="checkbox" ? checked : value});
-}
+export default function Form( { values, setValues, routeToConfirm, onChange } ) {
 
 function onSubmit(evt) {
     evt.preventDefault();
