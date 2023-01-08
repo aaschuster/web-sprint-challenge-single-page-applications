@@ -1,13 +1,8 @@
 import React from 'react'
 import "./form.css"
+import axios from 'axios';
 
-export default function Form( { values, routeToConfirm, onChange, disabled, errs, showErrs } ) {
-
-function onSubmit(evt) {
-    evt.preventDefault();
-    console.log(values);
-    routeToConfirm();
-}
+export default function Form( { values, onChange, onSubmit, disabled, errs, showErrs } ) {
 
     return (
         <form id="pizza-form" onSubmit={onSubmit}>
@@ -15,6 +10,7 @@ function onSubmit(evt) {
             {showErrs && <div id="errs">
                 <div>{errs.name}</div>
                 <div>{errs.size}</div>
+                <div>{errs.post}</div>
             </div>}
             <div id="options">
                 <div id="div1">

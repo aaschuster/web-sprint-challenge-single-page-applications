@@ -1,7 +1,8 @@
 //node imports
 
 import React, {useState, useEffect} from "react";
-import { useHistory, Route, Link, Switch } from "react-router-dom";
+import { useHistory, Route, Switch } from "react-router-dom";
+import axios from "axios";
 import * as yup from "yup";
 
 //component imports
@@ -63,9 +64,23 @@ const App = () => {
     setValues({...values, [name]: type==="checkbox" ? checked : value});
   }
 
+  function onSubmit(evt) {
+    evt.preventDefault();
+    axios.post("https://reqres.in/api/orders", values)
+        .then(() => routeToConfirm())
+        .catch(err => {
+            console.error(err);
+            setShowErrs(true);
+            setErrs({...errs, post: "Failed to order!"});
+        })        
+}
+
   useEffect(() => schema.isValid(values).then((valid) => {
     setDisabled(!valid);
+
+    // dont show errors until both name & size have been changed to prevent awkward show/hiding of errors elements
     if (changedValues.includes("name") && changedValues.includes("size") && valid===false) setShowErrs(true);
+    else setShowErrs(false);
   }), [values]);
 
   return (
@@ -76,8 +91,8 @@ const App = () => {
           <Form 
             values={values}
             setValues={setValues}
-            routeToConfirm={routeToConfirm}
             onChange={onChange}
+            onSubmit={onSubmit}
             disabled={disabled}
             errs={errs}
             showErrs={showErrs}
