@@ -50,3 +50,9 @@ h3 {
     
     margin: 15% auto;
 }
+
+#errs {
+    color: red;
+    font-weight: bold;
+    margin: 2% auto;
+}

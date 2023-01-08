@@ -1,7 +1,7 @@
 import React from 'react'
 import "./form.css"
 
-export default function Form( { values, setValues, routeToConfirm, onChange } ) {
+export default function Form( { values, routeToConfirm, onChange, disabled, errs, showErrs } ) {
 
 function onSubmit(evt) {
     evt.preventDefault();
@@ -12,6 +12,10 @@ function onSubmit(evt) {
     return (
         <form id="pizza-form" onSubmit={onSubmit}>
             <h2>Build yourself a pizza pie my friend!</h2>
+            {showErrs && <div id="errs">
+                <div>{errs.name}</div>
+                <div>{errs.size}</div>
+            </div>}
             <div id="options">
                 <div id="div1">
                     <label>
@@ -204,7 +208,7 @@ function onSubmit(evt) {
                         />
                     </label>
                     <label>
-                        <button id="order-button">Add to order!</button>
+                        <button id="order-button" disabled={disabled}>Add to order!</button>
                     </label>
                 </div>
             </div>

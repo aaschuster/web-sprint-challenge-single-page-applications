@@ -1,6 +1,6 @@
 //node imports
 
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useHistory, Route, Link, Switch } from "react-router-dom";
 import * as yup from "yup";
 
@@ -35,35 +35,53 @@ const App = () => {
   const initErrs = {
     name: "",
     size: "",
+    show: false
   }
 
   const history = useHistory();
   const routeToPizza = () => history.push("/pizza");
   const routeToConfirm = () => history.push("/confirmation");
+  const [ changedValues, setChangedValues ] = useState([]);
   const [ values, setValues ] = useState(initValues);
   const [ errs, setErrs ] = useState(initErrs);
+  const [ disabled, setDisabled ] = useState(true);
+  const [ showErrs, setShowErrs ] = useState(false);
 
   function onChange(evt) {
     const {name, value, type, checked} = evt.target;
+    if (!changedValues.includes(name)) setChangedValues([...changedValues, name]);
 
     if(name==="name" || name==="size") {
       yup.reach(schema, name)
         .validate(value)
         .then(() => setErrs({...errs, [name]: ""}))
-        .catch(err => setErrs({...errs, [name]: err.errors[0]}));
+        .catch((err) => {
+          setErrs({...errs, [name]: err.errors[0]})
+      });
     }
-
-    console.log(errs);
 
     setValues({...values, [name]: type==="checkbox" ? checked : value});
   }
+
+  useEffect(() => schema.isValid(values).then((valid) => {
+    setDisabled(!valid);
+    if (changedValues.includes("name") && changedValues.includes("size") && valid===false) setShowErrs(true);
+  }), [values]);
 
   return (
     <div>
       <h1>The Preppy Pepperoni Pizza Place</h1>
       <Switch>
         <Route path="/pizza">
-          <Form values={values} setValues={setValues} routeToConfirm={routeToConfirm} onChange={onChange}/>
+          <Form 
+            values={values}
+            setValues={setValues}
+            routeToConfirm={routeToConfirm}
+            onChange={onChange}
+            disabled={disabled}
+            errs={errs}
+            showErrs={showErrs}
+          />
         </Route>
         <Route path="/confirmation">
           <Confirmation/>
