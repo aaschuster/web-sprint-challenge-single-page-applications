@@ -25,7 +25,8 @@ const App = () => {
     sauce: "",
     sausage: false,
     size: "",
-    special: ""
+    special: "",
+    name: ""
   }
   const history = useHistory();
   const routeToPizza = () => history.push("/pizza");
@@ -43,7 +44,7 @@ const App = () => {
           <Confirmation/>
         </Route>
         <Route path="/">
-        <button onClick={routeToPizza}>Click here for pizza!</button>
+        <button id="order-pizza" onClick={routeToPizza}>Click here for pizza!</button>
         </Route>
       </Switch>
     </div>

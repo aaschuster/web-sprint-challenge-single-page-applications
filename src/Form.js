@@ -10,19 +10,29 @@ function onChange(evt) {
 
 function onSubmit(evt) {
     evt.preventDefault();
+    console.log(values);
     routeToConfirm();
 }
 
     return (
-        <form onSubmit={onSubmit}>
+        <form id="pizza-form" onSubmit={onSubmit}>
             <h2>Build yourself a pizza pie my friend!</h2>
             <div id="options">
                 <div id="div1">
+                    <label>
+                        <h3>Name</h3> <input
+                            onChange={onChange}
+                            value={values.name}
+                            name="name"
+                            id="name-input"
+                        />
+                    </label>
                     <label>
                         <h3>Size</h3> <select
                             onChange={onChange}
                             value={values.size}
                             name='size'
+                            id="size-dropdown"
                         >
                             <option value=""></option>
                             <option value="personal"> Personal Size (6inch) </option>
